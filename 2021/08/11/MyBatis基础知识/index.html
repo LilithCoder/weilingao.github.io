@@ -4,15 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>Archives: 2021/6 | 技术wiki博客</title>
+  <title>【更新中】MyBatis基础知识 | 技术wiki博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="技术wiki博客">
-<meta property="og:url" content="http://example.com/archives/2021/06/index.html">
+  <meta name="description" content="MyBatis基础知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【更新中】MyBatis基础知识">
+<meta property="og:url" content="http://example.com/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="技术wiki博客">
+<meta property="og:description" content="MyBatis基础知识">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/ss1.svg">
+<meta property="article:published_time" content="2021-08-11T14:23:03.000Z">
+<meta property="article:modified_time" content="2021-08-11T19:00:10.105Z">
 <meta property="article:author" content="gaoweilin">
+<meta property="article:tag" content="MyBatis">
+<meta property="article:tag" content="ORM框架">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/ss1.svg">
   
     <link rel="alternate" href="/atom.xml" title="技术wiki博客" type="application/atom+xml">
   
@@ -69,58 +77,79 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/06/19/MySQL%E7%9A%84%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8Aseqeul%20pro%E8%BF%9E%E6%8E%A5/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-06-19T05:23:29.000Z" itemprop="datePublished">Jun 19</time>
+        <section id="main"><article id="post-MyBatis基础知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2021-08-11T14:23:03.000Z" itemprop="datePublished">2021-08-11</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/">框架学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/19/MySQL%E7%9A%84%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8Aseqeul%20pro%E8%BF%9E%E6%8E%A5/">MySQL的本地搭建以及seqeul pro连接</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      【更新中】MyBatis基础知识
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/06/18/hello-world/" class="archive-article-date">
-  <time class="dt-published" datetime="2021-06-17T19:35:39.306Z" itemprop="datePublished">Jun 18</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p>hi all~<br>开个新坑，打算写一个文档来整理一下MyBatis的基础知识，比较适合刚接触MyBatis的新手村玩家，内容会比较多，感兴趣的话就往下看下去吧</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#MyBatis%E7%AE%80%E4%BB%8B">MyBatis简介</a><ul>
+<li><a href="#ORM%E6%A8%A1%E5%9E%8B">ORM模型</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="MyBatis简介"><a href="#MyBatis简介" class="headerlink" title="MyBatis简介"></a>MyBatis简介</h2><h3 id="ORM模型"><a href="#ORM模型" class="headerlink" title="ORM模型"></a>ORM模型</h3><p>Java程序是通过JDBC(Java Database Connectivity)来连接数据库的</p>
+<p>JDBC是Java程序和数据库交互的标准API，API分为面向Java程序开发的API以及面向数据库驱动程序开发的API，Java程序操作JDBC接口(来自Java标准库)，通过JDBC驱动来访问连接数据库的，其中JDBC驱动是JDBC接口的底层支持实现，且具体实现取决于各个不同的数据库厂商</p>
+<p>Java程序 -&gt; JDBC接口 -&gt; JDBC驱动 -&gt; 数据库</p>
+<p>JDBC让Java代码不再需要针对不同的数据库厂商分别开发，但JDBC的弊端在实际开发中也是显而易见的，通过一个简单的sql进行查询操作需要：</p>
+<ol>
+<li>注册数据库驱动类、指定数据库的信息</li>
+<li>通过DriverManager获取数据库连接</li>
+<li>创建statement对象，执行sql</li>
+<li>返回resultSet，并读取数据，转化为POJO(Plain Ordinary Java Object 简单Java对象)</li>
+<li>关闭所有相关资源</li>
+</ol>
+<p>看起来一次查询涉及到很多步骤，特别是第4步关系模型到对象模型的转换相对复杂，为了对jdbc进行封装，ORM模型出现了</p>
+<p>ORM(Object Relational Mapping 对象-关系映射)就是数据库的表和POJO的映射关系模型，这样的映射是通过映射配置完成的</p>
+<p><img src="/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/ss1.svg"></p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/11/MyBatis%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-id="cks7uxv9x00006f8c8h61gn1g" data-title="【更新中】MyBatis基础知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ORM%E6%A1%86%E6%9E%B6/" rel="tag">ORM框架</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/06/19/MySQL%E7%9A%84%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8Aseqeul%20pro%E8%BF%9E%E6%8E%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MySQL的本地搭建以及seqeul pro连接</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
