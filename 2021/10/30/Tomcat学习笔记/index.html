@@ -29,9 +29,11 @@
 <meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss17.png">
 <meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss18.png">
 <meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss19.png">
+<meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss20.png">
+<meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss21.png">
 <meta property="og:image" content="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss2.png">
 <meta property="article:published_time" content="2021-10-30T14:09:06.000Z">
-<meta property="article:modified_time" content="2021-11-07T14:58:47.546Z">
+<meta property="article:modified_time" content="2021-11-08T17:26:39.900Z">
 <meta property="article:author" content="gaoweilin">
 <meta property="article:tag" content="Tomcat">
 <meta property="article:tag" content="后端">
@@ -178,7 +180,16 @@
 </li>
 </ul>
 </li>
-<li><a href="#catalina">Catalina</a></li>
+<li><a href="#catalina">Catalina</a><ul>
+<li><a href="#digester">Digester</a><ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E6%A0%88">对象栈</a></li>
+<li><a href="#%E6%A8%A1%E5%BC%8F">模式</a></li>
+<li><a href="#%E8%A7%84%E5%88%99rule">规则Rule</a></li>
+<li><a href="#digester%E5%AE%9E%E4%BE%8B">Digester实例</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <!-- tocstop -->
 
@@ -305,12 +316,25 @@
 <li>如果没有，则从当前类加载器加载（按照WEB-INF/classes、WEB-INF/lib的顺序)</li>
 <li>如果没有，则从父类加载器加载，由于父类加载器采用默认的委派模式，所以加载顺序为System, Common, Shared</li>
 </ul>
-<h1><span id="catalina">Catalina</span></h1><p><img src="/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss2.png"></p>
+<h1><span id="catalina">Catalina</span></h1><h2><span id="digester">Digester</span></h2><p>Tomcat 的配置方式是用server.xml来对应用程序进行配置。server.xml 文件中的每个元素都会转换为一个Java 对象，元素的属性会用于设置Java对象的属性。这样，就可以通过简单地编辑 server.xml 文件来修改 Tomcat 的配置</p>
+<p>由于一个 Context 实例表示一个Web 应用程序，因此配置 Web 应用程序是通过对已经实例化的 Context 实例进行配置完成的。用来配置 web 应用程序的 XML 文件的名称是web.xml，该文件位于 Web 应用程序的 WEB-INF 目录下</p>
+<h3><span id="对象栈">对象栈</span></h3><p>Digester的设计模式是指，在文件读取过程中，如果遇到一个XML节点的开始部分，则会触<br>发处理规则事件创建Java对象，并将其放入栈。当处理该节点的子节点时，该对象都将维护在栈<br>中。当遇到该节点的结束部分时，该对象将会从栈中取出并清除</p>
+<h3><span id="模式">模式</span></h3><p><img src="/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss20.png"></p>
+<h3><span id="规则rule">规则Rule</span></h3><p>Rule 类有 begin() 方法和end() 方法。在解析XML 文档时，当 Digester 实例遇到匹配某个模式的元素的开始标签时，它会调用相应的 Rule 对象的 begin() 方法。而当 Digester实例遇到相应元素的结束标签时，它会调用 Rule 对象的end() 方法</p>
+<p>我们可以通过Digester类的addRule()方法为某个匹配模式指定一个处理规则，同时可以需要实现自己的规则。针对大多数常见的场景，Digester为我们提供了默认的处理规则实现</p>
+<p><img src="/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss21.png"></p>
+<h3><span id="digester实例">Digester实例</span></h3><p>一个例子看懂Digester<br>employee2.xml 文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">employee</span> <span class="attr">firstName-</span>&quot;<span class="attr">Freddie</span>&quot; <span class="attr">lastName</span>=<span class="string">&quot;Mercury&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">office</span> <span class="attr">description</span>=<span class="string">&quot;Headquarters&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">address</span> <span class="attr">streetName</span>=<span class="string">&quot;Wellington Avenue&quot;</span> <span class="attr">streetNumber</span>=<span class="string">&quot;223*/&gt;</span></span></span><br><span class="line"><span class="string"><span class="tag">    &lt;/office&gt;</span></span></span><br><span class="line"><span class="string"><span class="tag">    &lt;office description=&quot;</span><span class="attr">Client</span> <span class="attr">site</span>&quot;&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">address</span> <span class="attr">streetName-</span>&quot;<span class="attr">Downing</span> <span class="attr">Street</span>&quot; <span class="attr">streetNumber</span>=<span class="string">&quot;10&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">office</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">employee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>解析过程xml文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(String[)</span> args) </span>&#123;</span><br><span class="line">    String path = System.getProperty(<span class="string">&quot;user.dir&quot;</span>) + File.separator + <span class="string">&quot;etc&quot;</span>;</span><br><span class="line">    File file = <span class="keyword">new</span> File(path, <span class="string">&quot;employee2.xml&quot;</span>);</span><br><span class="line">    Digester digester = <span class="keyword">new</span> Digester();</span><br><span class="line">    <span class="comment">// add rules</span></span><br><span class="line">    digester.addobjectCreate(<span class="string">&quot;employee&quot;</span>, <span class="string">&quot;Employee&quot;</span>):</span><br><span class="line">    digester.addSetProperties(<span class="string">&quot;employee&quot;</span>) ;</span><br><span class="line">    digester.addobjectCreate(<span class="string">&quot;employee/office&quot;</span>, <span class="string">&quot;Office&quot;</span>):</span><br><span class="line">    digester.addSetProperties(<span class="string">&quot;employee/office&quot;</span>) ;</span><br><span class="line">    digester.addSetNext(<span class="string">&quot;employee/office&quot;</span>, <span class="string">&quot;addOffice&quot;</span>):</span><br><span class="line">    digester.addobjectCreate(<span class="string">&quot;employee/office/address&quot;</span>, <span class="string">&quot;Address&quot;</span>);</span><br><span class="line">    digester.addSetProperties(<span class="string">&quot;employee/office/address&quot;</span>);</span><br><span class="line">    digester.addSetNext (<span class="string">&quot;employee/office/address&quot;</span>, <span class="string">&quot;setAddress&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Employee employee = (Employee) digester.parse(file);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ss2.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckvpjzrj3000fw28c9ehi9emo" data-title="Tomcat学习笔记" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/10/30/Tomcat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckvsh41w8000f8y8ch09b1lwn" data-title="Tomcat学习笔记" class="article-share-link">Share</a>
       
       
       
